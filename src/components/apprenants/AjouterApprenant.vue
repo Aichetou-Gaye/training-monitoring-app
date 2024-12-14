@@ -12,15 +12,16 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="nom" class="form-label">Nom</label>
-                        <input type="text" v-model="nom" class="form-control" placeholder="Entrez le nom" required />
-                        <small v-if="errors.nom" class="text-danger">{{ errors.nom }}</small>
+                        <input type="text" v-model="full_name" class="form-control" placeholder="Entrez le nom"
+                            required />
+                        <small v-if="errors.full_name" class="text-danger">{{ errors.full_name }}</small>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <!-- <div class="col-md-6 mb-3">
                         <label for="prenom" class="form-label">Prénom</label>
                         <input type="text" v-model="prenom" class="form-control" placeholder="Entrez le prénom"
                             required />
                         <small v-if="errors.prenom" class="text-danger">{{ errors.prenom }}</small>
-                    </div>
+                    </div> -->
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" v-model="email" class="form-control" placeholder="Entrez l'email"
@@ -29,9 +30,9 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="telephone" class="form-label">Téléphone</label>
-                        <input type="text" v-model="telephone" class="form-control"
+                        <input type="text" v-model="phone_number" class="form-control"
                             placeholder="Entrez le numéro de téléphone" required />
-                        <small v-if="errors.telephone" class="text-danger">{{ errors.telephone }}</small>
+                        <small v-if="errors.phone_number" class="text-danger">{{ errors.phone_number }}</small>
                     </div>
                 </div>
 
@@ -39,16 +40,16 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="adresse" class="form-label">Adresse</label>
-                        <input type="text" v-model="adresse" class="form-control" placeholder="Entrez l'adresse"
+                        <input type="text" v-model="address" class="form-control" placeholder="Entrez l'adresse"
                             required />
-                        <small v-if="errors.adresse" class="text-danger">{{ errors.adresse }}</small>
+                        <small v-if="errors.address" class="text-danger">{{ errors.address }}</small>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <!-- <div class="col-md-6 mb-3">
                         <label for="tuteur" class="form-label">Tuteur/Tutrice</label>
                         <input type="text" v-model="tuteur" class="form-control" placeholder="Entrez le tuteur"
                             required />
                         <small v-if="errors.tuteur" class="text-danger">{{ errors.tuteur }}</small>
-                    </div>
+                    </div> -->
                 </div>
 
                 <button type="submit" class="btn w-100 py-2">Ajouter l'apprenant</button>
@@ -66,12 +67,12 @@ import { useRouter } from "vue-router";
 const toast = useToast();
 const router = useRouter();
 
-const nom = ref('');
-const prenom = ref('');
+const full_name = ref('');
+const phone_number = ref('');
 const email = ref('');
-const telephone = ref('');
-const adresse = ref('');
-const tuteur = ref('');
+const address = ref('');
+// const adresse = ref('');
+// const tuteur = ref('');
 const errors = ref({});
 
 const apprenantStore = useApprenantStore();
@@ -80,12 +81,12 @@ const addApprenant = async () => {
     errors.value = {};
     try {
         await apprenantStore.addApprenant({
-            nom: nom.value,
-            prenom: prenom.value,
+            full_name: full_name.value,
+            phone_number: phone_number.value,
             email: email.value,
             telephone: telephone.value,
-            adresse: adresse.value,
-            tuteur: tuteur.value
+            address: address.value,
+            // tuteur: tuteur.value
         });
         toast.success('Apprenant ajouté avec succès !');
         router.push("/apprenants");

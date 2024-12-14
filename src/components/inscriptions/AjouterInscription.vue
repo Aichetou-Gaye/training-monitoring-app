@@ -8,8 +8,14 @@
         <form @submit.prevent="submitForm">
             <div class="form-group">
                 <label for="apprenantId">Apprenant</label>
-                <input type="text" id="apprenantId" v-model="inscription.apprenantId" required
-                    placeholder="Entrez l'ID de l'apprenant" />
+                <!-- <input type="text" id="apprenantId" v-model="inscription.apprenantId" required
+                    placeholder="Entrez l'ID de l'apprenant" /> -->
+                <select v-model="inscription.apprenantId" class="form-select" required>
+                    <option disabled value="">Sélectionnez un apprenant</option>
+                    <option v-for="apprenant in apprenants" :key="apprenant.id" :value="apprenant.id">
+                        {{ apprenant.nom }}
+                    </option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -44,12 +50,14 @@
 <script setup>
 import { ref } from 'vue';
 import { useInscriptionStore } from '@/stores/inscriptionStore';
+import { useApprenantStore } from '@/stores/useApprenantStore';
 import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
 
 const inscriptionStore = useInscriptionStore();
 const toast = useToast();
 const router = useRouter();
+const apprenantStore = useApprenantStore();
 
 const inscription = ref({
     apprenantId: '',

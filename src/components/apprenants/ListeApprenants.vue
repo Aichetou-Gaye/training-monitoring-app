@@ -10,34 +10,33 @@
             </router-link>
         </div>
 
-
         <table class="apprenant-table">
             <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Prénom</th>
                     <th>Email</th>
                     <th>Téléphone</th>
                     <th>Adresse</th>
-                    <th>Tuteur/Tutrice</th>
                     <th>Status</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(apprenant, index) in apprenantStore.apprenants" :key="apprenant.id">
-                    <td>{{ apprenant.nom }}</td>
-                    <td>{{ apprenant.prenom }}</td>
+                <tr v-for="(apprenant, index) in apprenants" :key="apprenant.id">
+                    <td>{{ apprenant.full_name }}</td>
                     <td>{{ apprenant.email }}</td>
-                    <td>{{ apprenant.telephone }}</td>
-                    <td>{{ apprenant.adresse }}</td>
-                    <td>{{ apprenant.tuteur }}</td>
+                    <td>{{ apprenant.phone_number }}</td>
+                    <td>{{ apprenant.address }}</td>
                     <td class="status">
                         <i :class="apprenant.status ? 'fas fa-check-circle active-status' : 'fas fa-ban blocked-status'"
                             :title="apprenant.status ? 'Actif' : 'Inactif'"
                             @click="toggleApprenantStatus(apprenant)"></i>
                     </td>
                     <td class="actions">
+                        <button class="action-btn" @click="viewApprenantDetails(apprenant.id)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+
                         <router-link :to="`/apprenant/modifier/${apprenant.id}`" class="action-btn">
                             <i class="fas fa-edit"></i>
                         </router-link>
@@ -48,11 +47,23 @@
                 </tr>
             </tbody>
         </table>
+
+        <div v-if="isModalVisible" class="modal" @click="closeModal">
+            <div class="modal-content" @click.stop>
+                <span class="close" @click="closeModal">&times;</span>
+                <h3>Détails de l'apprenant</h3>
+                <p><strong>Nom :</strong> {{ selectedApprenant.full_name }}</p>
+                <p><strong>Email :</strong> {{ selectedApprenant.email }}</p>
+                <p><strong>Téléphone :</strong> {{ selectedApprenant.phone_number }}</p>
+                <p><strong>Adresse :</strong> {{ selectedApprenant.address }}</p>
+                <p><strong>Status :</strong> {{ selectedApprenant.status ? 'Actif' : 'Inactif' }}</p>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref } from 'vue';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/css/index.css';
 import { useApprenantStore } from '@/stores/useApprenantStore';
@@ -63,11 +74,12 @@ const apprenantStore = useApprenantStore();
 const toast = useToast();
 const apprenants = ref([]);
 const isLoading = ref(false);
+const isModalVisible = ref(false);
+const selectedApprenant = ref(null);
 
 onMounted(async () => {
-    isLoading.value = false;
+    isLoading.value = true;
     try {
-
         await apprenantStore.loadApprenantData();
         apprenants.value = apprenantStore.apprenants;
     } catch (error) {
@@ -78,7 +90,24 @@ onMounted(async () => {
     }
 });
 
+const viewApprenantDetails = async (id) => {
+    isLoading.value = true;
+    try {
+        await apprenantStore.loadApprenantById(id);
+        selectedApprenant.value = apprenantStore.apprenant;
+        isModalVisible.value = true;
+    } catch (error) {
+        console.error("Erreur lors du chargement des détails de l'apprenant :", error);
+        toast.error("Une erreur est survenue lors du chargement des détails de l'apprenant.");
+    } finally {
+        isLoading.value = false;
+    }
+};
 
+
+const closeModal = () => {
+    isModalVisible.value = false;
+};
 
 const confirmRemoveApprenant = async (id) => {
     const result = await Swal.fire({
@@ -111,12 +140,10 @@ const toggleApprenantStatus = async (apprenant) => {
     try {
         const updatedStatus = !apprenant.status;
         await apprenantStore.updateApprenant(apprenant.id, {
-            nom: apprenant.nom,
-            prenom: apprenant.prenom,
+            full_name: apprenant.full_name,
             email: apprenant.email,
-            telephone: apprenant.telephone,
-            adresse: apprenant.adresse,
-            tuteur: apprenant.tuteur,
+            phone_number: apprenant.phone_number,
+            address: apprenant.address,
             status: updatedStatus
         });
 
@@ -131,6 +158,7 @@ const toggleApprenantStatus = async (apprenant) => {
     }
 };
 </script>
+
 
 <style scoped>
 .apprenant-management {
@@ -223,5 +251,40 @@ h2 {
 .action-btn i {
     color: #6c757d;
     font-size: 18px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.close:hover {
+    color: #333;
 }
 </style>

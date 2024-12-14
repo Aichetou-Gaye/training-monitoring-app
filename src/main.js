@@ -11,7 +11,8 @@ import "vue-loading-overlay/dist/css/index.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 const app = createApp(App);
 
@@ -24,7 +25,7 @@ app.use(Toast, {
   closeOnClick: true
 });
 
-library.add(faCoffee);
+library.add(faUserSecret);
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.use(pinia);

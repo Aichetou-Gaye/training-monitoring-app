@@ -1,29 +1,23 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-// import { useAuthStore } from './authStore'; 
 
 export const useApprenantStore = defineStore("apprenantStore", {
   state: () => ({
     apprenants: [],
     apprenant: {
-      nom: "",
-      prenom: "",
+      full_name: "",
+      // first_name: "",
       email: "",
-      telephone: "",
-      addresse: "",
-      tuteur:"",
+      phone_number: "",
+      address: "",
+      status:"",
     }
   }),
 
   actions: {
     async loadApprenantData() {
-      // const authStore = useAuthStore(); 
       try {
-        const response = await axios.get("http://localhost:3000/api/apprenants", {
-          headers: {
-            // Authorization: `Bearer ${authStore.token}` 
-          }
-        });
+        const response = await axios.get("http://localhost:3000/api/students");
         this.apprenants = response.data;
       } catch (error) {
         console.error(
@@ -34,43 +28,28 @@ export const useApprenantStore = defineStore("apprenantStore", {
     },
     
     async loadApprenantById(id) {
-      // const authStore = useAuthStore(); 
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/apprenants/${id}`,
-          {
-            headers: {
-              // Authorization: `Bearer ${authStore.token}` 
-            }
-          }
-        );
-        const apprenantData = response.data;
-        this.apprenant = {
-          nom: apprenantData.nom,
-          email: apprenantData.email,
-          role: apprenantData.role
-        };
-       
+          console.log("ID a charger:", id); 
+          const response = await axios.get(`http://localhost:3000/api/students/${id}`);
+          const apprenantData = response.data;
+          this.apprenant = {
+              full_name: apprenantData.full_name,
+              email: apprenantData.email,
+              phone_number: apprenantData.phone_number,
+              address: apprenantData.address,
+              status: apprenantData.status
+          };
       } catch (error) {
-        console.error(
-          "Erreur lors du chargement de l'utilisateur :",
-          error.message
-        );
+          console.error("Erreur lors du chargement de l'utilisateur :", error.message);
       }
-    },
+  },
+  
 
     async addApprenant(newApprenant) {
-      // const authStore = useAuthStore();
       try {
         const response = await axios.post(
-          "http://localhost:3000/api/apprenants",
-          newApprenant,
-          {
-            headers: {
-              // Authorization: `Bearer ${authStore.token}` 
-            }
-          }
-        );
+          "http://localhost:3000/api/students",
+          newApprenant);
         if (response.status !== 200 && response.status !== 201) {
           throw new Error("L'ajout a échoué.");
         }
@@ -85,16 +64,10 @@ export const useApprenantStore = defineStore("apprenantStore", {
     },    
 
     async updateApprenant(id, updatedApprenant) {
-      // const authStore = useAuthStore();
       try {
         const response = await axios.put(
-          `http://localhost:3000/api/apprenants/${id}`,
-          updatedApprenant,
-          {
-            headers: {
-              // Authorization: `Bearer ${authStore.token}` 
-            }
-          }
+          `http://localhost:3000/api/students/${id}`,
+          updatedApprenant
         );
 
         if (response.status !== 200) {
@@ -112,13 +85,8 @@ export const useApprenantStore = defineStore("apprenantStore", {
     },
 
     async removeApprenant(id) {
-      // const authStore = useAuthStore();
       try {
-        await axios.delete(`http://localhost:3000/api/apprenants/${id}`, {
-          headers: {
-            // Authorization: `Bearer ${authStore.token}` 
-          }
-        });
+        await axios.delete(`http://localhost:3000/api/students/${id}`);
       await this.loadApprenantData();
       } catch (error) {
         console.error(
@@ -130,5 +98,5 @@ export const useApprenantStore = defineStore("apprenantStore", {
     }
   },
 
-  persist: false
+  persist: true
 });
