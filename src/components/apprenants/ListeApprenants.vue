@@ -54,14 +54,40 @@
             <div class="modal-content" @click.stop>
                 <span class="close" @click="closeModal">&times;</span>
                 <h3>Détails de l'apprenant</h3>
-                <p><strong>Nom :</strong> {{ selectedApprenant.full_name }}</p>
-                <p><strong>Email :</strong> {{ selectedApprenant.email }}</p>
-                <p><strong>Téléphone :</strong> {{ selectedApprenant.phone_number }}</p>
-                <p><strong>Adresse :</strong> {{ selectedApprenant.address }}</p>
-                <p><strong>Tuteur/Titrice :</strong> {{ selectedApprenant.tutor }}</p>
-                <p><strong>Status :</strong> {{ selectedApprenant.status ? 'Actif' : 'Inactif' }}</p>
+                <div v-if="selectedApprenant">
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Nom</label>
+                        <input type="text" id="full_name" v-model="selectedApprenant.full_name" class="form-control"
+                            readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" v-model="selectedApprenant.email" class="form-control"
+                            readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Téléphone</label>
+                        <input type="text" id="phone_number" v-model="selectedApprenant.phone_number"
+                            class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Adresse</label>
+                        <input type="text" id="address" v-model="selectedApprenant.address" class="form-control"
+                            readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="tutor" class="form-label">Tuteur/Titrice</label>
+                        <input type="text" id="tutor" v-model="selectedApprenant.tutor" class="form-control" readonly />
+                    </div>
+                    <!-- <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <input type="text" id="status" v-model="selectedApprenant.status ? 'Actif' : 'Inactif'"
+                            class="form-control" readonly />
+                    </div> -->
+                </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -186,31 +212,94 @@ const toggleApprenantStatus = async (apprenant) => {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    /* Fond semi-transparent */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
+    /* Animation d'apparition du modal */
 }
 
 .modal-content {
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
+    padding: 30px;
+    border-radius: 10px;
+    /* Coins arrondis */
+    width: 500px;
     max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Ombre subtile autour du modal */
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .close {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
     color: #999;
+    transition: color 0.3s;
 }
 
 .close:hover {
     color: #333;
+    /* Changer la couleur au survol */
+}
+
+.mb-3 {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* Coins arrondis des champs de saisie */
+    background-color: #f9f9f9;
+    /* Couleur de fond des champs */
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #1abc9c;
+    /* Couleur de la bordure au focus */
+    outline: none;
+}
+
+.form-control[readonly] {
+    background-color: #e9ecef;
+    /* Changer la couleur de fond des champs readonly */
+    cursor: not-allowed;
+    /* Désactiver le curseur de texte */
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-content p strong {
+    color: #1abc9c;
+    /* Couleur pour les labels */
 }
 </style>

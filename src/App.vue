@@ -7,7 +7,7 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container">
         <RouterLink class="nav-link" to="/">
-          <!-- <img src="./assets/img.jpg" alt="Logo de l'application" /> -->
+          <img src="./assets/logo.jpg" alt="Logo de l'application" />
         </RouterLink>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

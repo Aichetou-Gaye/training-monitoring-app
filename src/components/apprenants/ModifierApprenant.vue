@@ -80,7 +80,7 @@ const apprenantStore = useApprenantStore();
 onMounted(async () => {
     const apprenantId = route.params.id;
     form.value = await apprenantStore.loadApprenantById(apprenantId)
-    console.log(form.value);
+    // console.log(form.value);
 
     // apprenantStore.loadApprenantById(apprenantId).then(() => {
     //     full_name.value = apprenantStore.apprenant.full_name;
