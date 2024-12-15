@@ -29,7 +29,7 @@ export const useRegistrationStore = defineStore("inscriptionStore", {
     async loadRegistrationById(id) {
       try {
         const response = await axios.get(`http://localhost:3000/api/registrations/${id}`);
-        return response.data.registrations;
+        return response.data.registration;
       } catch (error) {
         console.error("Erreur lors du chargement de l'inscription :", error.message);
       }
@@ -61,7 +61,7 @@ export const useRegistrationStore = defineStore("inscriptionStore", {
       }
     },
 
-    async removeInscription(id) {
+    async removeRegistration(id) {
       try {
         await axios.delete(`http://localhost:3000/api/registrations/${id}`);
         await this.loadRegistrations();

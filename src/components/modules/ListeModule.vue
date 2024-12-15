@@ -23,7 +23,7 @@
                 <tr v-for="(module, index) in modules" :key="module.id">
                     <td>{{ module.name }}</td>
                     <td>{{ module.duration }}</td>
-                    <td>{{ module.price | currency }}</td>
+                    <td>{{ module.price }}</td>
                     <td class="actions">
                         <button class="action-btn" @click="viewModuleDetails(module.id)">
                             <i class="fas fa-eye"></i>

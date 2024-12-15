@@ -17,7 +17,7 @@
                     <th>Module</th>
                     <th>Date d'Inscription</th>
                     <th>Date de Début</th>
-                    <th>Date de Fin</th>
+                    <th>Payer</th>
                     <th>Montant</th>
                     <th class="text-center">Actions</th>
                 </tr>
@@ -28,8 +28,8 @@
                     <td>{{ registration.module_name }}</td>
                     <td>{{ formatDate(registration.registration_date) }}</td>
                     <td>{{ formatDate(registration.start_date) }}</td>
-                    <td>{{ formatDate(registration.end_date) }}</td>
-                    <td>{{ registration.total_amount }}</td>
+                    <td>{{ registration.paid }}</td>
+                    <td>{{ registration.amount }}</td>
                     <td class="actions">
                         <button class="action-btn" @click="viewRegistrationDetails(registration.id)">
                             <i class="fas fa-eye"></i>
@@ -51,23 +51,22 @@
                 <span class="close" @click="closeModal">&times;</span>
                 <h3>Détails de l'Inscription</h3>
                 <p v-if="selectedRegistration">
-                    <strong>Étudiant :</strong> {{ selectedRegistration.student?.student_name }}
+                    <strong>Étudiant :</strong> {{ selectedRegistration.student_name }}
                 </p>
                 <p v-if="selectedRegistration">
-                    <strong>Module :</strong> {{ selectedRegistration.module?.module_name }}
+                    <strong>Module :</strong> {{ selectedRegistration.module_name }}
                 </p>
                 <p v-if="selectedRegistration">
-                    <strong>Date d'Inscription :</strong> {{ formatDate(selectedRegistration.registration_date)
-                    }}
+                    <strong>Date d'Inscription :</strong> {{ formatDate(selectedRegistration.registration_date) }}
                 </p>
                 <p v-if="selectedRegistration">
                     <strong>Date de Début :</strong> {{ formatDate(selectedRegistration.start_date) }}
                 </p>
                 <p v-if="selectedRegistration">
-                    <strong>Date de Fin :</strong> {{ formatDate(selectedRegistration.end_date) }}
+                    <strong>Payer :</strong> {{ selectedRegistration.paid }}
                 </p>
                 <p v-if="selectedRegistration">
-                    <strong>Montant :</strong> {{ selectedRegistration.total_amount }}
+                    <strong>Montant :</strong> {{ selectedRegistration.amount }}
                 </p>
             </div>
         </div>
@@ -104,7 +103,7 @@ onMounted(async () => {
 });
 
 const viewRegistrationDetails = async (id) => {
-    isLoading.value = false;
+    isLoading.value = true;
     try {
         selectedRegistration.value = await store.loadRegistrationById(id);
         isModalVisible.value = true;
@@ -133,19 +132,23 @@ const confirmRemoveRegistration = async (id) => {
         confirmButtonText: 'Oui, supprimer',
         cancelButtonText: 'Annuler'
     });
+
     if (result.isConfirmed) {
+        console.log('Suppression ID:', id);
         isLoading.value = true;
         try {
-            await registrationStore.removeRegistration(id);
+            await store.removeRegistration(id);
             toast.success('Inscription supprimée avec succès !');
-            await registrationStore.loadRegistrations();
-            registrations.value = registrationStore.registrations;
+            await store.loadRegistrations();
+            registrations.value = store.inscriptions;
         } catch (error) {
             console.error("Erreur lors de la suppression de l'inscription:", error.message);
             toast.error('Une erreur est survenue lors de la suppression.');
         } finally {
             isLoading.value = false;
         }
+    } else {
+        console.log('Suppression annulée');
     }
 };
 

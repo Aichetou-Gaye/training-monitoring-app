@@ -1,168 +1,193 @@
 <template>
-    <div class="update-registration">
-        <loading :active.sync="isLoading" :can-cancel="false" color="#1abc9c"
-            background-color="rgba(255, 255, 255, 0.8)" />
+    <div class="form-container d-flex align-items-center">
+        <div class="form-content">
+            <div>
+                <router-link to="/inscription" class="btn btn-secondary mb-3">
+                    <i class="fas fa-arrow-left"></i>
+                </router-link>
+            </div>
+            <form @submit.prevent="updateInscription" class="p-4 shadow-sm rounded">
+                <h2 class="text-center mb-4">Modifier l'inscription</h2>
 
-        <h2>Modifier l'Inscription</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="studentId" class="form-label">Étudiant</label>
+                        <select v-model="studentId" class="form-control" required>
+                            <option v-for="student in students" :key="student.id" :value="student.id">
+                                {{ student.full_name }}
+                            </option>
+                        </select>
+                        <small v-if="errors.full_name" class="text-danger">{{ errors.full_name }}</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="moduleId" class="form-label">Module</label>
+                        <select v-model="moduleId" class="form-control" required>
+                            <option v-for="module in modules" :key="module.id" :value="module.id">
+                                {{ module.name }}
+                            </option>
+                        </select>
+                        <small v-if="errors.name" class="text-danger">{{ errors.name }}</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="amount" class="form-label">Montant</label>
+                        <input type="number" v-model="amount" class="form-control" required />
+                        <small v-if="errors.amount" class="text-danger">{{ errors.amount }}</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="registration_date" class="form-label">Date d'inscription</label>
+                        <input type="date" v-model="registration_date" class="form-control" required />
+                        <small v-if="errors.registration_date" class="text-danger">{{ errors.registration_date
+                            }}</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="start_date" class="form-label">Date de début</label>
+                        <input type="date" v-model="start_date" class="form-control" required />
+                        <small v-if="errors.start_date" class="text-danger">{{ errors.start_date }}</small>
+                    </div>
 
-        <form @submit.prevent="updateRegistration">
-            <div class="form-group">
-                <label for="student_id">Sélectionner l'étudiant :</label>
-                <select id="student_id" v-model="formData.student_id" required>
-                    <option v-for="student in students" :key="studentId" :value="studentId">
-                        {{ student.full_name }}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="module_id">Sélectionner le module :</label>
-                <select id="module_id" v-model="formData.module_id" required>
-                    <option v-for="module in modules" :key="moduleId" :value="moduleId">
-                        {{ module.name }}
-                    </option>
-                </select>
-            </div>
+                </div>
 
-            <div class="form-group">
-                <label for="registration_date">Date d'Inscription :</label>
-                <input type="date" id="registration_date" v-model="formData.registration_date" required />
-            </div>
-            <div class="form-group">
-                <label for="start_date">Date de Début :</label>
-                <input type="date" id="start_date" v-model="formData.start_date" required />
-            </div>
-            <div class="form-group">
-                <label for="end_date">Date de Fin :</label>
-                <input type="date" id="end_date" v-model="formData.end_date" required />
-            </div>
-
-            <div class="form-group">
-                <label for="amount">Montant :</label>
-                <input type="number" id="amount" v-model="formData.amount" required />
-            </div>
-
-            <div class="form-group">
-                <button type="submit" :disabled="isLoading">Mettre à jour</button>
-            </div>
-        </form>
+                <button type="submit" class="btn w-100 py-2">Mettre à jour l'inscription</button>
+            </form>
+        </div>
     </div>
 </template>
-
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRegistrationStore } from '@/stores/inscriptionStore';
-import { useApprenantStore } from '@/stores/useApprenantStore';
 import { useModuleStore } from '@/stores/moduleStore';
+import { useApprenantStore } from '@/stores/useApprenantStore';
 import { useToast } from 'vue-toastification';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter, useRoute } from "vue-router";
 
-const route = useRoute();
-const router = useRouter();
 const toast = useToast();
-
-const store = useRegistrationStore();
-const studentStore = useApprenantStore();
+const router = useRouter();
+const route = useRoute();
+const registrationStore = useRegistrationStore();
 const moduleStore = useModuleStore();
+const apprenantStore = useApprenantStore();
 
-const isLoading = ref(false);
-const formData = ref({
-    studentId: '',
-    moduleId: '',
-    registration_date: '',
-    start_date: '',
-    end_date: '',
-    amount: ''
-});
+const registration_date = ref('');
+const start_date = ref('');
+const amount = ref(0);
+const studentId = ref(null);
+const moduleId = ref(null);
+const errors = ref({});
+
 const students = ref([]);
 const modules = ref([]);
+const registrationId = ref(null);
 
 onMounted(async () => {
-    const registrationId = route.params.id;
     try {
-        isLoading.value = true;
-
-        await studentStore.loadApprenantData();
-        students.value = studentStore.students;
-
+        await apprenantStore.loadApprenantData();
+        students.value = apprenantStore.apprenants;
         await moduleStore.loadModuleData();
         modules.value = moduleStore.modules;
 
-        const registration = await store.loadRegistrationById(registrationId);
-        formData.value = {
-            studentId: registration.studentId,
-            moduleId: registration.moduleId,
-            registration_date: registration.registration_date,
-            start_date: registration.start_date,
-            end_date: registration.end_date,
-            amount: registration.amount
-        };
+        registrationId.value = route.params.id;
+
+        const registration = await registrationStore.loadRegistrationById(registrationId.value);
+        console.log(registration);
+
+        if (registration) {
+            studentId.value = registration.studentId;
+            moduleId.value = registration.moduleId;
+            amount.value = parseFloat(registration.amount);
+            registration_date.value = registration.registration_date.slice(0, 10);
+            start_date.value = registration.start_date.slice(0, 10);
+        }
     } catch (error) {
-        toast.error('Erreur lors du chargement des données.');
-    } finally {
-        isLoading.value = false;
+        toast.error("Erreur lors du chargement des données.");
+        console.error("Erreur de chargement:", error);
     }
 });
 
 
-const updateRegistration = async () => {
-    isLoading.value = true;
-    const registrationId = route.params.id;
+watch(moduleId, (newModuleId) => {
+    const selectedModule = modules.value.find(module => module.id === newModuleId);
+    if (selectedModule) {
+        amount.value = selectedModule.price;
+    }
+});
+
+const updateInscription = async () => {
+    errors.value = {};
     try {
-        await store.updateRegistration(registrationId, formData.value);
-        toast.success('Inscription mise à jour avec succès!');
-        router.push('/inscriptions');
+        await registrationStore.updateRegistration(registrationId.value, {
+            registration_date: registration_date.value,
+            start_date: start_date.value,
+            amount: amount.value,
+            studentId: studentId.value,
+            moduleId: moduleId.value,
+        });
+        toast.success('Inscription mise à jour avec succès !');
+        router.push("/inscription");
     } catch (error) {
-        toast.error('Erreur lors de la mise à jour de l\'inscription.');
-    } finally {
-        isLoading.value = false;
+        if (error.response && error.response.data && error.response.data.errors) {
+            error.response.data.errors.forEach(err => {
+                errors.value[err.path] = err.msg;
+            });
+        } else {
+            toast.error('Une erreur est survenue lors de la mise à jour de l\'inscription.');
+        }
     }
 };
 </script>
 
+
 <style scoped>
-.update-registration {
-    margin: 0 auto;
+.form-container {
     max-width: 800px;
+    margin: 50px auto;
     padding: 20px;
-    background-color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-content {
+    flex: 1;
+    background-color: #f9f9f9;
+}
+
+.form-control {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.btn {
+    background-color: #1abc9c;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: #1abc9c;
 }
 
 h2 {
-    font-size: 24px;
-    color: #4a4a4a;
+    color: #343a40;
+    font-weight: bold;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.shadow-sm {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-group label {
-    font-size: 16px;
-    color: #333;
+.bg-white {
+    background-color: white;
 }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #1abc9c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:disabled {
-    background-color: #ccc;
+.rounded {
+    border-radius: 8px;
 }
 </style>
