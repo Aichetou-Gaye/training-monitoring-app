@@ -17,6 +17,7 @@
                     <th>Email</th>
                     <th>Téléphone</th>
                     <th>Adresse</th>
+                    <th>Tuteur/Titrice</th>
                     <th>Status</th>
                     <th class="text-center">Actions</th>
                 </tr>
@@ -27,6 +28,7 @@
                     <td>{{ apprenant.email }}</td>
                     <td>{{ apprenant.phone_number }}</td>
                     <td>{{ apprenant.address }}</td>
+                    <td>{{ apprenant.tutor }}</td>
                     <td class="status">
                         <i :class="apprenant.status ? 'fas fa-check-circle active-status' : 'fas fa-ban blocked-status'"
                             :title="apprenant.status ? 'Actif' : 'Inactif'"
@@ -56,6 +58,7 @@
                 <p><strong>Email :</strong> {{ selectedApprenant.email }}</p>
                 <p><strong>Téléphone :</strong> {{ selectedApprenant.phone_number }}</p>
                 <p><strong>Adresse :</strong> {{ selectedApprenant.address }}</p>
+                <p><strong>Tuteur/Titrice :</strong> {{ selectedApprenant.tutor }}</p>
                 <p><strong>Status :</strong> {{ selectedApprenant.status ? 'Actif' : 'Inactif' }}</p>
             </div>
         </div>
@@ -82,6 +85,8 @@ onMounted(async () => {
     try {
         await apprenantStore.loadApprenantData();
         apprenants.value = apprenantStore.apprenants;
+        // console.log("fghjkhgfddf", apprenants.value);
+
     } catch (error) {
         console.error("Erreur lors du chargement des apprenants:", error);
         toast.error("Une erreur est survenue lors du chargement des apprenants.");
@@ -93,8 +98,8 @@ onMounted(async () => {
 const viewApprenantDetails = async (id) => {
     isLoading.value = true;
     try {
-        await apprenantStore.loadApprenantById(id);
-        selectedApprenant.value = apprenantStore.apprenant;
+        selectedApprenant.value = await apprenantStore.loadApprenantById(id);
+        // selectedApprenant.value = apprenantStore.apprenant;
         isModalVisible.value = true;
     } catch (error) {
         console.error("Erreur lors du chargement des détails de l'apprenant :", error);

@@ -12,26 +12,28 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="nom" class="form-label">Nom</label>
-                        <input type="text" v-model="nom" class="form-control" placeholder="Entrez le nom" required />
-                        <small v-if="errors.nom" class="text-danger">{{ errors.nom }}</small>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" v-model="prenom" class="form-control" placeholder="Entrez le prénom"
+                        <input type="text" v-model="form.full_name" class="form-control" placeholder="Entrez le nom"
                             required />
-                        <small v-if="errors.prenom" class="text-danger">{{ errors.prenom }}</small>
+                        <small v-if="errors.full_name" class="text-danger">{{ errors.full_name }}</small>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" v-model="email" class="form-control" placeholder="Entrez l'email"
+                        <input type="email" v-model="form.email" class="form-control" placeholder="Entrez l'email"
                             required />
                         <small v-if="errors.email" class="text-danger">{{ errors.email }}</small>
                     </div>
                     <div class="col-md-6 mb-3">
+                        <label for="tuteur" class="form-label">Tuteur/Tutrice</label>
+                        <input type="text" v-model="form.tutor" class="form-control" placeholder="Entrez le tuteur"
+                            required />
+                        <small v-if="errors.tutor" class="text-danger">{{ errors.tutor }}</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
                         <label for="telephone" class="form-label">Téléphone</label>
-                        <input type="text" v-model="telephone" class="form-control"
+                        <input type="text" v-model="form.phone_number" class="form-control"
                             placeholder="Entrez le numéro de téléphone" required />
-                        <small v-if="errors.telephone" class="text-danger">{{ errors.telephone }}</small>
+                        <small v-if="errors.phone_number" class="text-danger">{{ errors.phone_number }}</small>
                     </div>
                 </div>
 
@@ -39,16 +41,11 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="adresse" class="form-label">Adresse</label>
-                        <input type="text" v-model="adresse" class="form-control" placeholder="Entrez l'adresse"
+                        <input type="text" v-model="form.address" class="form-control" placeholder="Entrez l'adresse"
                             required />
-                        <small v-if="errors.adresse" class="text-danger">{{ errors.adresse }}</small>
+                        <small v-if="errors.address" class="text-danger">{{ errors.address }}</small>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="tuteur" class="form-label">Tuteur/Tutrice</label>
-                        <input type="text" v-model="tuteur" class="form-control" placeholder="Entrez le tuteur"
-                            required />
-                        <small v-if="errors.tuteur" class="text-danger">{{ errors.tuteur }}</small>
-                    </div>
+
                 </div>
 
                 <button type="submit" class="btn w-100 py-2">Modifier l'apprenant</button>
@@ -66,45 +63,48 @@ import { useRouter, useRoute } from "vue-router";
 const toast = useToast();
 const router = useRouter();
 const route = useRoute();
+const form = ref({})
 
 
-const nom = ref('');
-const prenom = ref('');
+const full_name = ref('');
+const phone_number = ref('');
 const email = ref('');
-const telephone = ref('');
-const adresse = ref('');
-const tuteur = ref('');
+const address = ref('');
+const tutor = ref('');
 const errors = ref({});
 
 
 const apprenantStore = useApprenantStore();
 
 
-onMounted(() => {
+onMounted(async () => {
     const apprenantId = route.params.id;
-    apprenantStore.loadApprenantById(apprenantId).then(() => {
-        nom.value = apprenantStore.apprenant.nom;
-        prenom.value = apprenantStore.apprenant.prenom;
-        email.value = apprenantStore.apprenant.email;
-        telephone.value = apprenantStore.apprenant.telephone;
-        adresse.value = apprenantStore.apprenant.addresse;
-        tuteur.value = apprenantStore.apprenant.tuteur;
-    }).catch((error) => {
-        toast.error("Erreur lors du chargement de l'apprenant.");
-        console.error("Erreur :", error.message);
-    });
+    form.value = await apprenantStore.loadApprenantById(apprenantId)
+    console.log(form.value);
+
+    // apprenantStore.loadApprenantById(apprenantId).then(() => {
+    //     full_name.value = apprenantStore.apprenant.full_name;
+    //     // prenom.value = apprenantStore.apprenant.prenom;
+    //     email.value = apprenantStore.apprenant.email;
+    //     phone_number.value = apprenantStore.apprenant.phone_number;
+    //     address.value = apprenantStore.apprenant.address;
+    //     // tuteur.value = apprenantStore.apprenant.tuteur;
+    // }).catch((error) => {
+    //     toast.error("Erreur lors du chargement de l'apprenant.");
+    //     console.error("Erreur :", error.message);
+    // });
 });
 
 const updateApprenant = async () => {
     errors.value = {};
     try {
+        const apprenantId = route.params.id;
         await apprenantStore.updateApprenant(apprenantId, {
-            nom: nom.value,
-            prenom: prenom.value,
-            email: email.value,
-            telephone: telephone.value,
-            adresse: adresse.value,
-            tuteur: tuteur.value
+            full_name: form.value.full_name,
+            email: form.value.email,
+            phone_number: form.value.phone_number,
+            address: form.value.address,
+            tutor: form.value.tutor
         });
         toast.success('Apprenant modifié avec succès !');
         router.push("/apprenants");
@@ -118,6 +118,7 @@ const updateApprenant = async () => {
         }
     }
 };
+
 </script>
 
 <style scoped>

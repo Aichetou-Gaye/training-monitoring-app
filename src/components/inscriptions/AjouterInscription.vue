@@ -49,12 +49,12 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useInscriptionStore } from '@/stores/inscriptionStore';
+import { useRegistrationStore } from '@/stores/inscriptionStore';
 import { useApprenantStore } from '@/stores/useApprenantStore';
 import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
 
-const inscriptionStore = useInscriptionStore();
+const inscriptionStore = useRegistrationStore();
 const toast = useToast();
 const router = useRouter();
 const apprenantStore = useApprenantStore();

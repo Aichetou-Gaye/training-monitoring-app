@@ -1,91 +1,76 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-export const useInscriptionStore = defineStore("apprenantStore", {
+export const useRegistrationStore = defineStore("inscriptionStore", {
   state: () => ({
-    apprenants: [],
     inscriptions: [],
-    moduls: [],
+    inscription: {
+      registration_date: "",
+      start_date: "",
+      end_date: "",
+      amount: 0,
+      studentId: null,
+      moduleId: null,
+    },
   }),
 
   actions: {
-    async loadInscriptions() {
+    async loadRegistrations() {
       try {
-        const response = await axios.get("http://localhost:3000/api/apprenants");
-        this.apprenants = response.data;
+        const response = await axios.get("http://localhost:3000/api/registrations");
+          this.inscriptions = response.data.registrations;
+          
       } catch (error) {
-        console.error(
-          "Erreur lors du chargement des apprenants :",
-          error.message
-        );
+        this.inscriptions = [];
+        console.error("Erreur lors du chargement des inscriptions :", error.message);
       }
     },
-    
-    async loadInscriptionById(id) {
+
+    async loadRegistrationById(id) {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/apprenants/${id}`);
-          this.inscription = response.data;
-          return this.inscription;
+        const response = await axios.get(`http://localhost:3000/api/registrations/${id}`);
+        return response.data.registrations;
       } catch (error) {
-        console.error(
-          "Erreur lors du chargement de l'utilisateur :",
-          error.message
-        );
+        console.error("Erreur lors du chargement de l'inscription :", error.message);
       }
     },
 
     async addInscription(newInscription) {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/apprenants",
-          newInscription);
+        const response = await axios.post("http://localhost:3000/api/registrations", newInscription);
         if (response.status !== 200 && response.status !== 201) {
-          throw new Error("L'ajout a échoué.");
+          throw new Error("L'ajout de l'inscription a échoué.");
         }
-        await this.loadInscriptions();
+        await this.loadRegistrations();
       } catch (error) {
-        console.error(
-          "Erreur lors de l'ajout de l'utilisateur :",
-          error.response?.data || error.message
-        );
-        throw error;
-      }
-    },    
-
-    async updateApprenant(id, updatedApprenant) {
-      try {
-        const response = await axios.put(
-          `http://localhost:3000/api/apprenants/${id}`,
-          updatedApprenant,);
-
-        if (response.status !== 200) {
-          throw new Error("La mise à jour a échoué.");
-        }
-
-       await this.loadInscriptions();
-      } catch (error) {
-        console.error(
-          "Erreur lors de la mise à jour de l'utilisateur :",
-          error.message
-        );
+        console.error("Erreur lors de l'ajout de l'inscription :", error.response?.data || error.message);
         throw error;
       }
     },
 
-    async removeApprenant(id) {
+    async updateRegistration(id, updatedInscription) {
       try {
-        await axios.delete(`http://localhost:3000/api/apprenants/${id}`);
-      await this.loadInscriptions();
+        const response = await axios.put(`http://localhost:3000/api/registrations/${id}`, updatedInscription);
+        if (response.status !== 200) {
+          throw new Error("La mise à jour de l'inscription a échoué.");
+        }
+        await this.loadRegistrations();
       } catch (error) {
-        console.error(
-          "Erreur lors de la suppression de l'utilisateur :",
-          error.message
-        );
+        console.error("Erreur lors de la mise à jour de l'inscription :", error.message);
         throw error;
       }
-    }
+    },
+
+    async removeInscription(id) {
+      try {
+        await axios.delete(`http://localhost:3000/api/registrations/${id}`);
+        await this.loadRegistrations();
+      } catch (error) {
+        console.error("Erreur lors de la suppression de l'inscription :", error.message);
+        throw error;
+      }
+    },
   },
 
-  persist: false
+  persist: true,
 });

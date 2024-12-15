@@ -16,17 +16,18 @@
                             required />
                         <small v-if="errors.full_name" class="text-danger">{{ errors.full_name }}</small>
                     </div>
-                    <!-- <div class="col-md-6 mb-3">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" v-model="prenom" class="form-control" placeholder="Entrez le prénom"
-                            required />
-                        <small v-if="errors.prenom" class="text-danger">{{ errors.prenom }}</small>
-                    </div> -->
+
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" v-model="email" class="form-control" placeholder="Entrez l'email"
                             required />
                         <small v-if="errors.email" class="text-danger">{{ errors.email }}</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tuteur" class="form-label">Tuteur/Tutrice</label>
+                        <input type="text" v-model="tutor" class="form-control" placeholder="Entrez le tuteur"
+                            required />
+                        <small v-if="errors.tutor" class="text-danger">{{ errors.tutor }}</small>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="telephone" class="form-label">Téléphone</label>
@@ -44,12 +45,7 @@
                             required />
                         <small v-if="errors.address" class="text-danger">{{ errors.address }}</small>
                     </div>
-                    <!-- <div class="col-md-6 mb-3">
-                        <label for="tuteur" class="form-label">Tuteur/Tutrice</label>
-                        <input type="text" v-model="tuteur" class="form-control" placeholder="Entrez le tuteur"
-                            required />
-                        <small v-if="errors.tuteur" class="text-danger">{{ errors.tuteur }}</small>
-                    </div> -->
+
                 </div>
 
                 <button type="submit" class="btn w-100 py-2">Ajouter l'apprenant</button>
@@ -71,8 +67,7 @@ const full_name = ref('');
 const phone_number = ref('');
 const email = ref('');
 const address = ref('');
-// const adresse = ref('');
-// const tuteur = ref('');
+const tutor = ref('');
 const errors = ref({});
 
 const apprenantStore = useApprenantStore();
@@ -80,18 +75,18 @@ const apprenantStore = useApprenantStore();
 const addApprenant = async () => {
     errors.value = {};
     try {
+
         await apprenantStore.addApprenant({
             full_name: full_name.value,
             phone_number: phone_number.value,
             email: email.value,
-            telephone: telephone.value,
             address: address.value,
-            // tuteur: tuteur.value
+            tutor: tutor.value
         });
         toast.success('Apprenant ajouté avec succès !');
         router.push("/apprenants");
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
+        if (error.response && error.response.data.errors) {
             error.response.data.errors.forEach(err => {
                 errors.value[err.path] = err.msg;
             });
@@ -100,6 +95,7 @@ const addApprenant = async () => {
         }
     }
 };
+
 </script>
 
 <style scoped>

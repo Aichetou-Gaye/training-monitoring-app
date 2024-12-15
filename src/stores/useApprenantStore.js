@@ -6,11 +6,12 @@ export const useApprenantStore = defineStore("apprenantStore", {
     apprenants: [],
     apprenant: {
       full_name: "",
-      // first_name: "",
       email: "",
       phone_number: "",
       address: "",
-      status:"",
+      status: "",
+      tutor: ""
+
     }
   }),
 
@@ -18,8 +19,9 @@ export const useApprenantStore = defineStore("apprenantStore", {
     async loadApprenantData() {
       try {
         const response = await axios.get("http://localhost:3000/api/students");
-        this.apprenants = response.data;
+        this.apprenants = response.data.students;        
       } catch (error) {
+        this.apprenants = []
         console.error(
           "Erreur lors du chargement des apprenants :",
           error.message
@@ -29,16 +31,9 @@ export const useApprenantStore = defineStore("apprenantStore", {
     
     async loadApprenantById(id) {
       try {
-          console.log("ID a charger:", id); 
+          // console.log("ID a charger:", id); 
           const response = await axios.get(`http://localhost:3000/api/students/${id}`);
-          const apprenantData = response.data;
-          this.apprenant = {
-              full_name: apprenantData.full_name,
-              email: apprenantData.email,
-              phone_number: apprenantData.phone_number,
-              address: apprenantData.address,
-              status: apprenantData.status
-          };
+         return response.data.student;
       } catch (error) {
           console.error("Erreur lors du chargement de l'utilisateur :", error.message);
       }
@@ -74,7 +69,7 @@ export const useApprenantStore = defineStore("apprenantStore", {
           throw new Error("La mise à jour a échoué.");
         }
 
-       await this.loadApprenantData();
+       await this.loadApprenantById();
       } catch (error) {
         console.error(
           "Erreur lors de la mise à jour de l'utilisateur :",
