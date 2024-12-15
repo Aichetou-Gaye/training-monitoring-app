@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="duration" class="form-label">Durée</label>
-                        <input type="text" v-model="duration" class="form-control"
+                        <input type="number" v-model="duration" class="form-control"
                             placeholder="Entrez la durée du module" required />
                         <small v-if="errors.duration" class="text-danger">{{ errors.duration }}</small>
                     </div>
@@ -58,7 +58,7 @@ const addModule = async () => {
 
         await moduleStore.addModule({
             name: name.value,
-            duration: duration.value,
+            duration: parseInt(duration.value),
             price: price.value
         });
         toast.success('Module ajouté avec succès !');

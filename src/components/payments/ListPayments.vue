@@ -10,7 +10,7 @@
             </router-link>
         </div>
 
-        <table class="table">
+        <table class="tableau">
             <thead>
                 <tr>
                     <th>Date de Paiement</th>
@@ -31,7 +31,7 @@
                     <td>{{ payment.payer }}</td>
                     <td>{{ payment.payer_number }}</td>
                     <td>{{ payment.student_name }}</td>
-                    <td>{{ payment.student_name }}</td>
+                    <td>{{ payment.module_name }}</td>
                     <td class="actions">
                         <button class="action-btn" @click="showModal(payment.id)">
                             <i class="fas fa-eye"></i>
@@ -160,7 +160,7 @@ const formatDate = (date) => {
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-    margin-top: 100px;
+    margin-top: 20px;
 }
 
 h2 {
@@ -181,7 +181,7 @@ h2 {
     margin-right: 8px;
 }
 
-.table {
+.tableau {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
@@ -191,24 +191,24 @@ h2 {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.table th,
-.table td {
+.tableau th,
+.tableau td {
     padding: 15px 20px;
     text-align: left;
 }
 
-.table th {
-    background-color: #f9f9f9;
-    color: #666;
+.tableau th {
+    background-color: #cccccc;
+    color: #000;
     font-weight: bold;
 }
 
-.table td {
+.tableau td {
     border-bottom: 1px solid #e3e3e3;
     color: #333;
 }
 
-.table tbody tr:hover {
+.tableau tbody tr:hover {
     background-color: #f1f1f1;
 }
 

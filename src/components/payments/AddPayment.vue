@@ -1,8 +1,8 @@
 <template>
     <div class="form-container d-flex align-items-center">
         <div class="form-content">
-        <!-- <loading :active.sync="isLoading" :can-cancel="false" color="#1abc9c"
-            background-color="rgba(255, 255, 255, 0.8)" /> -->
+        <loading :active.sync="isLoading" :can-cancel="false" color="#1abc9c"
+            background-color="rgba(255, 255, 255, 0.8)" />
         <div class="">
             <router-link to="/payment" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i>
@@ -78,7 +78,6 @@ const fetchStudents = async () => {
     store.getStudentRegistrations(studentId.value)
 }
 
-// const registrationId = ref(null)
 const getAmount = async () => {
     store.getAmount(form.registrationId)
 }

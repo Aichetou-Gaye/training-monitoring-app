@@ -10,7 +10,7 @@
             </router-link>
         </div>
 
-        <table class="table">
+        <table class="tableau">
             <thead>
                 <tr>
                     <th>Étudiant</th>

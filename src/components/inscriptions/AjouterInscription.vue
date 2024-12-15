@@ -122,7 +122,7 @@ const addInscription = async () => {
 
 
 
-<style scoped>
+<style>
 .form-container {
     max-width: 800px;
     margin: 50px auto;
