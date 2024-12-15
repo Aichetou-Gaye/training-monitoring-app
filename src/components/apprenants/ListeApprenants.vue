@@ -1,16 +1,16 @@
 <template>
-    <div class="apprenant-management">
+    <div class="management">
         <loading :active.sync="isLoading" :can-cancel="false" color="#1abc9c"
             background-color="rgba(255, 255, 255, 0.8)" />
 
         <div class="top-bar">
             <h2>Liste des apprenants</h2>
-            <router-link class="btn btn-success create-apprenant" to="/apprenant/ajouter">
+            <router-link class="btn btn-success create" to="/apprenant/ajouter">
                 <i class="fas fa-user-plus"></i> Ajouter un apprenant
             </router-link>
         </div>
 
-        <table class="apprenant-table">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(apprenant, index) in apprenants" :key="apprenant.id">
+                <tr v-for="apprenant in apprenants" :key="apprenant.id">
                     <td>{{ apprenant.full_name }}</td>
                     <td>{{ apprenant.email }}</td>
                     <td>{{ apprenant.phone_number }}</td>
@@ -166,69 +166,6 @@ const toggleApprenantStatus = async (apprenant) => {
 
 
 <style scoped>
-.apprenant-management {
-    margin: 0 auto;
-    max-width: 1200px;
-    padding: 10px;
-}
-
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    margin-top: 100px;
-}
-
-h2 {
-    font-size: 24px;
-    color: #4a4a4a;
-}
-
-.create-apprenant {
-    color: white;
-    border-radius: 5px;
-    padding: 10px 15px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.create-apprenant i {
-    margin-right: 8px;
-}
-
-.apprenant-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.apprenant-table th,
-.apprenant-table td {
-    padding: 15px 20px;
-    text-align: left;
-}
-
-.apprenant-table th {
-    background-color: #f9f9f9;
-    color: #666;
-    font-weight: bold;
-}
-
-.apprenant-table td {
-    border-bottom: 1px solid #e3e3e3;
-    color: #333;
-}
-
-.apprenant-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
 .status i {
     font-size: 18px;
     cursor: pointer;
@@ -240,22 +177,6 @@ h2 {
 
 .blocked-status {
     color: #dc3545;
-}
-
-.actions {
-    text-align: center;
-}
-
-.action-btn {
-    background-color: transparent;
-    border: none;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.action-btn i {
-    color: #6c757d;
-    font-size: 18px;
 }
 
 .modal {

@@ -98,7 +98,7 @@ const addApprenant = async () => {
 
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .form-container {
     max-width: 800px;
     margin: 50px auto;
@@ -152,4 +152,4 @@ h2 {
 .rounded {
     border-radius: 8px;
 }
-</style>
+</style> -->

@@ -1,16 +1,16 @@
 <template>
-    <div class="module-management">
+    <div class="management">
         <loading :active.sync="isLoading" :can-cancel="false" color="#1abc9c"
             background-color="rgba(255, 255, 255, 0.8)" />
 
         <div class="top-bar">
             <h2>Liste des modules</h2>
-            <router-link class="btn btn-success create-module" to="/module/ajouter">
+            <router-link class="btn btn-success module" to="/module/ajouter">
                 <i class="fas fa-plus-circle"></i> Ajouter un module
             </router-link>
         </div>
 
-        <table class="module-table">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -20,10 +20,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(module, index) in modules" :key="module.id">
+                <tr v-for="module in modules" :key="module.id">
                     <td>{{ module.name }}</td>
                     <td>{{ module.duration }}</td>
-                    <td>{{ module.price | currency }}</td>
+                    <td>{{ module.price }}</td>
                     <td class="actions">
                         <button class="action-btn" @click="viewModuleDetails(module.id)">
                             <i class="fas fa-eye"></i>
@@ -126,84 +126,6 @@ const confirmRemoveModule = async (id) => {
 </script>
 
 <style scoped>
-.module-management {
-    margin: 0 auto;
-    max-width: 1200px;
-    padding: 10px;
-}
-
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    margin-top: 100px;
-}
-
-h2 {
-    font-size: 24px;
-    color: #4a4a4a;
-}
-
-.create-module {
-    color: white;
-    border-radius: 5px;
-    padding: 10px 15px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.create-module i {
-    margin-right: 8px;
-}
-
-.module-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.module-table th,
-.module-table td {
-    padding: 15px 20px;
-    text-align: left;
-}
-
-.module-table th {
-    background-color: #f9f9f9;
-    color: #666;
-    font-weight: bold;
-}
-
-.module-table td {
-    border-bottom: 1px solid #e3e3e3;
-    color: #333;
-}
-
-.module-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-.actions {
-    text-align: center;
-}
-
-.action-btn {
-    background-color: transparent;
-    border: none;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.action-btn i {
-    color: #6c757d;
-    font-size: 18px;
-}
 
 .modal {
     position: fixed;

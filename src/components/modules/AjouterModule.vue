@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn w-100 py-2">Ajouter le module</button>
+                <button type="submit" class="btn w-100 py-2">Ajouter</button>
             </form>
         </div>
     </div>
@@ -75,7 +75,7 @@ const addModule = async () => {
 };
 </script>
 
-<style scoped>
+<style>
 .form-container {
     max-width: 800px;
     margin: 50px auto;

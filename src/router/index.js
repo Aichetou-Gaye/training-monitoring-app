@@ -10,6 +10,9 @@ import ListeInscription from '@/components/inscriptions/ListeInscription.vue'
 import AjouterInscription from '@/components/inscriptions/AjouterInscription.vue'
 import ModifierInscription from '@/components/inscriptions/ModifierInscription.vue'
 
+import ListPayments from '@/components/payments/ListPayments.vue'
+import AddPayment from '@/components/payments/AddPayment.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL || '/'),
   routes: [
@@ -63,6 +66,22 @@ const router = createRouter({
       name: 'modifier-inscription',
       component: ModifierInscription,
     },
+    {
+      path: '/payment',
+      children: [
+        {
+          path: '',
+          component:ListPayments,
+          name: 'payments'
+        },
+        {
+          path: 'new',
+          component:AddPayment,
+          name: 'add-payment'
+        },
+      ]
+
+    }
   ],
 })
 

@@ -29,7 +29,7 @@
             </li>
 
             <li class="nav-item me-3">
-              <RouterLink class="nav-link fw-bold" to="/">Gestion des paiements</RouterLink>
+              <RouterLink class="nav-link fw-bold" to="/payment">Gestion des paiements</RouterLink>
             </li>
 
           </ul>

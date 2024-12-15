@@ -1,16 +1,16 @@
 <template>
-    <div class="registration-management">
+    <div class="management">
         <loading :active.sync="isLoading" :can-cancel="false" color="#1abc9c"
             background-color="rgba(255, 255, 255, 0.8)" />
 
         <div class="top-bar">
             <h2>Liste des Inscriptions</h2>
-            <router-link class="btn btn-success create-registration" to="/inscription/ajouter">
+            <router-link class="btn btn-success create" to="/inscription/ajouter">
                 <i class="fas fa-plus-circle"></i> Ajouter une inscription
             </router-link>
         </div>
 
-        <table class="registration-table">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Étudiant</th>
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(registration, index) in registrations" :key="registration.id">
+                <tr v-for="registration in registrations" :key="registration.id">
                     <td>{{ registration.student_name }}</td>
                     <td>{{ registration.module_name }}</td>
                     <td>{{ formatDate(registration.registration_date) }}</td>
@@ -155,85 +155,6 @@ const formatDate = (date) => {
 </script>
 
 <style scoped>
-.registration-management {
-    margin: 0 auto;
-    max-width: 1200px;
-    padding: 10px;
-}
-
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    margin-top: 100px;
-}
-
-h2 {
-    font-size: 24px;
-    color: #4a4a4a;
-}
-
-.create-registration {
-    color: white;
-    border-radius: 5px;
-    padding: 10px 15px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.create-registration i {
-    margin-right: 8px;
-}
-
-.registration-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.registration-table th,
-.registration-table td {
-    padding: 15px 20px;
-    text-align: left;
-}
-
-.registration-table th {
-    background-color: #f9f9f9;
-    color: #666;
-    font-weight: bold;
-}
-
-.registration-table td {
-    border-bottom: 1px solid #e3e3e3;
-    color: #333;
-}
-
-.registration-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-.actions {
-    text-align: center;
-}
-
-.action-btn {
-    background-color: transparent;
-    border: none;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.action-btn i {
-    color: #6c757d;
-    font-size: 18px;
-}
-
 .modal {
     position: fixed;
     top: 0;
