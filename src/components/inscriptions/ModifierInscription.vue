@@ -117,7 +117,7 @@ const updateInscription = async () => {
         await registrationStore.updateRegistration(registrationId.value, {
             registration_date: registration_date.value,
             start_date: start_date.value,
-            amount: amount.value,
+            amount: parseFloat(amount.value),
             studentId: studentId.value,
             moduleId: moduleId.value,
         });

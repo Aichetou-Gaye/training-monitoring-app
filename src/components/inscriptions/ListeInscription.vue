@@ -50,25 +50,41 @@
             <div class="modal-content" @click.stop>
                 <span class="close" @click="closeModal">&times;</span>
                 <h3>Détails de l'Inscription</h3>
-                <p v-if="selectedRegistration">
-                    <strong>Étudiant :</strong> {{ selectedRegistration.student_name }}
-                </p>
-                <p v-if="selectedRegistration">
-                    <strong>Module :</strong> {{ selectedRegistration.module_name }}
-                </p>
-                <p v-if="selectedRegistration">
-                    <strong>Date d'Inscription :</strong> {{ formatDate(selectedRegistration.registration_date) }}
-                </p>
-                <p v-if="selectedRegistration">
-                    <strong>Date de Début :</strong> {{ formatDate(selectedRegistration.start_date) }}
-                </p>
-                <p v-if="selectedRegistration">
-                    <strong>Payer :</strong> {{ selectedRegistration.paid }}
-                </p>
-                <p v-if="selectedRegistration">
-                    <strong>Montant :</strong> {{ selectedRegistration.amount }}
-                </p>
+                <div v-if="selectedRegistration">
+                    <div class="mb-3">
+                        <label for="student_name" class="form-label">Étudiant</label>
+                        <input type="text" id="student_name" v-model="selectedRegistration.student_name"
+                            class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="module_name" class="form-label">Module</label>
+                        <input type="text" id="module_name" v-model="selectedRegistration.module_name"
+                            class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="registration_date" class="form-label">Date d'Inscription</label>
+                        <input type="date" id="registration_date" v-model="selectedRegistration.registration_date"
+                            class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Date de Début</label>
+                        <input type="date" id="start_date" v-model="selectedRegistration.start_date"
+                            class="form-control" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label for="paid" class="form-label">Payer</label>
+                        <input type="number" id="paid" v-model="selectedRegistration.paid" class="form-control"
+                            readonly />
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Montant</label>
+                        <input type="number" id="amount" v-model="selectedRegistration.amount" class="form-control"
+                            readonly />
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -248,27 +264,79 @@ h2 {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .modal-content {
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
+    padding: 30px;
+    border-radius: 10px;
+    width: 500px;
     max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .close {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
     color: #999;
+    transition: color 0.3s;
 }
 
 .close:hover {
     color: #333;
+}
+
+.mb-3 {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #1abc9c;
+    outline: none;
+}
+
+.form-control[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-content p strong {
+    color: #1abc9c;
 }
 </style>
