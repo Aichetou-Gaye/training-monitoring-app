@@ -51,7 +51,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRegistrationStore } from '@/stores/inscriptionStore';
-import { useApprenantStore } from '@/stores/useApprenantStore';
+import { useApprenantStore } from '@/stores/apprenantStore';
 import { useModuleStore } from '@/stores/moduleStore';
 import { useToast } from 'vue-toastification';
 import { useRoute, useRouter } from 'vue-router';

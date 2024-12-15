@@ -95,7 +95,7 @@
 import { onMounted, ref } from 'vue';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/css/index.css';
-import { useApprenantStore } from '@/stores/useApprenantStore';
+import { useApprenantStore } from '@/stores/apprenantStore';
 import { useToast } from 'vue-toastification';
 import Swal from 'sweetalert2';
 

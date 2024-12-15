@@ -56,7 +56,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useApprenantStore } from '@/stores/useApprenantStore';
+import { useApprenantStore } from '@/stores/apprenantStore';
 import { useToast } from 'vue-toastification';
 import { useRouter, useRoute } from "vue-router";
 

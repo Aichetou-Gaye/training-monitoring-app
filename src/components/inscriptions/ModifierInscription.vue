@@ -56,7 +56,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { useRegistrationStore } from '@/stores/inscriptionStore';
 import { useModuleStore } from '@/stores/moduleStore';
-import { useApprenantStore } from '@/stores/useApprenantStore';
+import { useApprenantStore } from '@/stores/apprenantStore';
 import { useToast } from 'vue-toastification';
 import { useRouter, useRoute } from "vue-router";
 
