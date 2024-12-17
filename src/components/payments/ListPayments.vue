@@ -48,40 +48,48 @@
             <div class="modal-content" @click.stop>
                 <span class="close" @click="closeModal">&times;</span>
                 <h3>Détails du Paiement</h3>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Apprenant</label>
-                    <p class="form-control">{{ selectedPayment.student_name }}</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Apprenant</label>
+                        <p class="form-control">{{ selectedPayment.student_name }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Module</label>
+                        <p class="form-control">{{ selectedPayment.module_name }}</p>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Module</label>
-                    <p class="form-control">{{ selectedPayment.module_name }}</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Date de Paiement</label>
+                        <p class="form-control">{{ formatDate(selectedPayment.payment_date)
+                            }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Date d'Inscription </label>
+                        <p class="form-control">{{ formatDate(selectedPayment.registration_date)
+                            }}</p>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Date de Paiement</label>
-                    <p class="form-control">{{ formatDate(selectedPayment.payment_date)
-                    }}</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Payeur</label>
+                        <p class="form-control">{{ selectedPayment.payer
+                            }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Numéro de téléphone</label>
+                        <p class="form-control">{{ selectedPayment.payer_number }}</p>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Date d'Inscription </label>
-                    <p class="form-control">{{ formatDate(selectedPayment.registration_date)
-                    }}</p>
-                </div>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Payeur</label>
-                    <p class="form-control">{{ selectedPayment.payer
-                    }}</p>
-                </div>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Numéro de téléphone</label>
-                    <p class="form-control">{{ selectedPayment.payer_number }}</p>
-                </div>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Montant Payé</label>
-                    <p class="form-control">{{ selectedPayment.amount }}</p>
-                </div>
-                <div class="mb-3">
-                    <label for="app" class="form-label">Montant Restant</label>
-                    <p class="form-control">{{ selectedPayment.paid_amount }}</p>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Montant Payé</label>
+                        <p class="form-control">{{ selectedPayment.amount }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="app" class="form-label">Montant Restant</label>
+                        <p class="form-control">{{ selectedPayment.paid_amount }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -157,7 +165,7 @@ const formatDate = (date) => {
 };
 </script>
 
-<style>
+<style scoped>
 .management {
     margin: 0 auto;
     max-width: 1200px;
@@ -173,8 +181,9 @@ const formatDate = (date) => {
 }
 
 h2 {
-    font-size: 24px;
+    font-size: 28px;
     color: #4a4a4a;
+    font-weight: 600;
 }
 
 .create {
@@ -249,27 +258,72 @@ h2 {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .modal-content {
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
+    padding: 30px;
+    border-radius: 10px;
+    width: 500px;
     max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .close {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
     color: #999;
+    transition: color 0.3s;
 }
 
 .close:hover {
     color: #333;
+}
+
+.form-label {
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #1abc9c;
+    outline: none;
+}
+
+.form-control[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-content p strong {
+    color: #1abc9c;
 }
 </style>

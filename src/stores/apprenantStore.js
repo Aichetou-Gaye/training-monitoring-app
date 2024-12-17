@@ -10,41 +10,45 @@ export const useApprenantStore = defineStore("apprenantStore", {
       phone_number: "",
       address: "",
       status: "",
-      tutor: ""
-
-    }
+      tutor: "",
+    },
   }),
 
   actions: {
     async loadApprenantData() {
       try {
         const response = await axios.get("http://localhost:3000/api/students");
-        this.apprenants = response.data.students;        
+        this.apprenants = response.data.students;
       } catch (error) {
-        this.apprenants = []
+        this.apprenants = [];
         console.error(
           "Erreur lors du chargement des apprenants :",
           error.message
         );
       }
     },
-    
+
     async loadApprenantById(id) {
       try {
-          // console.log("ID a charger:", id); 
-          const response = await axios.get(`http://localhost:3000/api/students/${id}`);
-         return response.data.student;
+        // console.log("ID a charger:", id);
+        const response = await axios.get(
+          `http://localhost:3000/api/students/${id}`
+        );
+        return response.data.student;
       } catch (error) {
-          console.error("Erreur lors du chargement de l'utilisateur :", error.message);
+        console.error(
+          "Erreur lors du chargement de l'utilisateur :",
+          error.message
+        );
       }
-  },
-  
+    },
 
     async addApprenant(newApprenant) {
       try {
         const response = await axios.post(
           "http://localhost:3000/api/students",
-          newApprenant);
+          newApprenant
+        );
         if (response.status !== 200 && response.status !== 201) {
           throw new Error("L'ajout a échoué.");
         }
@@ -56,7 +60,7 @@ export const useApprenantStore = defineStore("apprenantStore", {
         );
         throw error;
       }
-    },    
+    },
 
     async updateApprenant(id, updatedApprenant) {
       try {
@@ -69,7 +73,7 @@ export const useApprenantStore = defineStore("apprenantStore", {
           throw new Error("La mise à jour a échoué.");
         }
 
-       await this.loadApprenantById();
+        await this.loadApprenantById();
       } catch (error) {
         console.error(
           "Erreur lors de la mise à jour de l'utilisateur :",
@@ -82,7 +86,7 @@ export const useApprenantStore = defineStore("apprenantStore", {
     async removeApprenant(id) {
       try {
         await axios.delete(`http://localhost:3000/api/students/${id}`);
-      await this.loadApprenantData();
+        await this.loadApprenantData();
       } catch (error) {
         console.error(
           "Erreur lors de la suppression de l'utilisateur :",
@@ -90,8 +94,26 @@ export const useApprenantStore = defineStore("apprenantStore", {
         );
         throw error;
       }
-    }
+    },
+
+    async toggleStatut(id) {
+      let response = "";
+      try {
+        const element = this.apprenants.find((e) => e.id === id);
+        response = await axios.put(
+          `http://localhost:3000/api/students/status/${id}`,
+          {
+            status: !element.status,
+          }
+        );
+        await this.loadApprenantData();
+        return response.data.message;
+      } catch (error) {
+        const message = error.response.data.message;
+        throw message;
+      }
+    },
   },
 
-  persist: true
+  persist: true,
 });

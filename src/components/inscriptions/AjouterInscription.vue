@@ -2,7 +2,7 @@
     <div class="form-container d-flex align-items-center">
         <div class="form-content">
             <div class="">
-                <router-link to="/inscription" class="btn btn-secondary mb-3">
+                <router-link to="/inscription" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                 </router-link>
             </div>
@@ -122,10 +122,10 @@ const addInscription = async () => {
 
 
 
-<style>
+<style scoped>
 .form-container {
     max-width: 800px;
-    margin: 50px auto;
+    margin: 20px auto;
     padding: 20px;
     display: flex;
     align-items: center;

@@ -141,6 +141,137 @@ const confirmRemoveModule = async (id) => {
 </script>
 
 <style scoped>
+.management {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 10px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+h2 {
+    font-size: 28px;
+    color: #4a4a4a;
+    font-weight: 600;
+}
+
+.create {
+    color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.create i {
+    margin-right: 8px;
+}
+
+.tableau {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tableau th,
+.tableau td {
+    padding: 15px 20px;
+    text-align: left;
+}
+
+.tableau th {
+    background-color: #cccccc;
+    color: #000;
+    font-weight: bold;
+}
+
+.tableau td {
+    border-bottom: 1px solid #e3e3e3;
+    color: #333;
+}
+
+.tableau tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.actions {
+    text-align: center;
+    display: flex;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.action-btn i {
+    color: #6c757d;
+    font-size: 15px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-content h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.mb-3 {
+    margin-bottom: 15px;
+}
+
 
 .modal {
     position: fixed;
@@ -188,10 +319,6 @@ const confirmRemoveModule = async (id) => {
     color: #333;
 }
 
-.mb-3 {
-    margin-bottom: 15px;
-}
-
 .form-label {
     font-size: 16px;
     color: #555;
@@ -217,15 +344,5 @@ const confirmRemoveModule = async (id) => {
 .form-control[readonly] {
     background-color: #e9ecef;
     cursor: not-allowed;
-}
-
-.modal-content p {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.modal-content p strong {
-    color: #1abc9c;
 }
 </style>

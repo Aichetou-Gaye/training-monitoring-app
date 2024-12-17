@@ -2,7 +2,7 @@
     <div class="form-container d-flex align-items-center">
         <div class="form-content">
             <div class="">
-                <router-link to="/modules" class="btn btn-secondary mb-3">
+                <router-link to="/modules" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                 </router-link>
             </div>
@@ -63,8 +63,8 @@ const updateModule = async () => {
         const moduleId = route.params.id;
         await moduleStore.updateModule(moduleId, {
             name: form.value.name,
-            duration: form.value.duration,
-            price: form.value.price
+            duration: parseInt(form.value.duration),
+            price: parseFloat(form.value.price)
         });
         toast.success('Module modifié avec succès !');
         router.push("/modules");
@@ -80,3 +80,58 @@ const updateModule = async () => {
 };
 </script>
 
+<style scoped>
+.form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-content {
+    flex: 1;
+    background-color: #f9f9f9;
+}
+
+.form-control {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.btn {
+    background-color: #1abc9c;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: #1abc9c;
+}
+
+h2 {
+    color: #343a40;
+    font-weight: bold;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.rounded {
+    border-radius: 8px;
+}
+</style>

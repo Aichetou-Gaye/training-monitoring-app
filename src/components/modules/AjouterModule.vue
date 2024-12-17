@@ -2,7 +2,7 @@
     <div class="form-container d-flex align-items-center">
         <div class="form-content">
             <div class="">
-                <router-link to="/modules" class="btn btn-secondary mb-3">
+                <router-link to="/modules" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                 </router-link>
             </div>
@@ -10,19 +10,19 @@
                 <h2 class="text-center mb-4">Ajouter un module</h2>
 
                 <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="mb-3">
                         <label for="name" class="form-label">Nom du module</label>
                         <input type="text" v-model="name" class="form-control" placeholder="Entrez le nom du module"
                             required />
                         <small v-if="errors.name" class="text-danger">{{ errors.name }}</small>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="mb-3">
                         <label for="duration" class="form-label">Durée</label>
                         <input type="number" v-model="duration" class="form-control"
                             placeholder="Entrez la durée du module" required />
                         <small v-if="errors.duration" class="text-danger">{{ errors.duration }}</small>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="mb-3">
                         <label for="price" class="form-label">Prix</label>
                         <input type="number" v-model="price" class="form-control" placeholder="Entrez le prix du module"
                             required />
@@ -59,7 +59,7 @@ const addModule = async () => {
         await moduleStore.addModule({
             name: name.value,
             duration: parseInt(duration.value),
-            price: price.value
+            price: parseFloat(price.value)
         });
         toast.success('Module ajouté avec succès !');
         router.push("/modules");
@@ -75,10 +75,10 @@ const addModule = async () => {
 };
 </script>
 
-<style>
+<style scoped>
 .form-container {
     max-width: 800px;
-    margin: 50px auto;
+    margin: 20px auto;
     padding: 20px;
     display: flex;
     align-items: center;

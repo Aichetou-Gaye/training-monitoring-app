@@ -17,6 +17,7 @@
                     <th>Module</th>
                     <th>Date d'Inscription</th>
                     <th>Date de Début</th>
+                    <th>Date de Fin</th>
                     <th>Payer</th>
                     <th>Montant</th>
                     <th class="text-center">Actions</th>
@@ -28,6 +29,7 @@
                     <td>{{ registration.module_name }}</td>
                     <td>{{ formatDate(registration.registration_date) }}</td>
                     <td>{{ formatDate(registration.start_date) }}</td>
+                    <td>{{ formatDate(registration.end_date) }}</td>
                     <td>{{ registration.paid }}</td>
                     <td>{{ registration.amount }}</td>
                     <td class="actions">
@@ -53,34 +55,37 @@
                 <div v-if="selectedRegistration">
                     <div class="mb-3">
                         <label for="student_name" class="form-label">Étudiant</label>
-                        <input type="text" id="student_name" v-model="selectedRegistration.student_name"
-                            class="form-control" readonly />
+                        <p class="form-control">{{ selectedRegistration.student_name }}</p>
                     </div>
-                    <div class="mb-3">
-                        <label for="module_name" class="form-label">Module</label>
-                        <input type="text" id="module_name" v-model="selectedRegistration.module_name"
-                            class="form-control" readonly />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="module_name" class="form-label">Module</label>
+                            <p class="form-control">{{ selectedRegistration.module_name }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="registration_date" class="form-label">Date d'Inscription</label>
+                            <p class="form-control">{{ formatDate(selectedRegistration.registration_date) }}</p>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="registration_date" class="form-label">Date d'Inscription</label>
-                        <input type="date" id="registration_date" v-model="selectedRegistration.registration_date"
-                            class="form-control" readonly />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="start_date" class="form-label">Date de Début</label>
+                            <p class="form-control">{{ formatDate(selectedRegistration.start_date) }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="start_date" class="form-label">Date de Fin</label>
+                            <p class="form-control">{{ formatDate(selectedRegistration.end_date) }}</p>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="start_date" class="form-label">Date de Début</label>
-                        <input type="date" id="start_date" v-model="selectedRegistration.start_date"
-                            class="form-control" readonly />
-                    </div>
-                    <div class="mb-3">
-                        <label for="paid" class="form-label">Payer</label>
-                        <input type="number" id="paid" v-model="selectedRegistration.paid" class="form-control"
-                            readonly />
-
-                    </div>
-                    <div class="mb-3">
-                        <label for="amount" class="form-label">Montant</label>
-                        <input type="number" id="amount" v-model="selectedRegistration.amount" class="form-control"
-                            readonly />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="amount" class="form-label">Montant Total</label>
+                            <p class="form-control">{{ selectedRegistration.amount }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="paid" class="form-label">Montant Restant</label>
+                            <p class="form-control">{{ selectedRegistration.paid }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,6 +179,122 @@ const formatDate = (date) => {
 </script>
 
 <style scoped>
+.management {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 10px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+h2 {
+    font-size: 28px;
+    color: #4a4a4a;
+    font-weight: 600;
+}
+
+.create {
+    color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.create i {
+    margin-right: 8px;
+}
+
+.tableau {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tableau th,
+.tableau td {
+    padding: 15px 20px;
+    text-align: left;
+}
+
+.tableau th {
+    background-color: #cccccc;
+    color: #000;
+    font-weight: bold;
+}
+
+.tableau td {
+    border-bottom: 1px solid #e3e3e3;
+    color: #333;
+}
+
+.tableau tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.actions {
+    text-align: center;
+    display: flex;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.action-btn i {
+    color: #6c757d;
+    font-size: 15px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.close:hover {
+    color: #333;
+}
+
 .modal {
     position: fixed;
     top: 0;

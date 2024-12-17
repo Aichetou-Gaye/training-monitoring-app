@@ -11,7 +11,7 @@ import "vue-loading-overlay/dist/css/index.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import { faUserSecret, fas } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-free/css/all.css";
 
 const app = createApp(App);
@@ -22,10 +22,10 @@ pinia.use(piniaPluginPersistedstate);
 app.use(Toast, {
   position: "top-right",
   timeout: 3000,
-  closeOnClick: true
+  closeOnClick: true,
 });
 
-library.add(faUserSecret);
+library.add(faUserSecret, fas);
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.use(pinia);

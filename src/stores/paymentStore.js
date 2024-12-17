@@ -84,6 +84,7 @@ export const usePaymentStore = defineStore("paymentStore", {
 
     async create() {
       let response = "";
+      this.paymentForm.amount = parseFloat(this.paymentForm.amount)
       try {
         response = await axios.post(
           "http://localhost:3000/api/payments",

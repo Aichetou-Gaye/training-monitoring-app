@@ -2,7 +2,7 @@
     <div class="form-container d-flex align-items-center">
         <div class="form-content">
             <div class="">
-                <router-link to="/apprenants" class="btn btn-secondary mb-3">
+                <router-link to="/apprenants" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                 </router-link>
             </div>
@@ -80,19 +80,6 @@ const apprenantStore = useApprenantStore();
 onMounted(async () => {
     const apprenantId = route.params.id;
     form.value = await apprenantStore.loadApprenantById(apprenantId)
-    // console.log(form.value);
-
-    // apprenantStore.loadApprenantById(apprenantId).then(() => {
-    //     full_name.value = apprenantStore.apprenant.full_name;
-    //     // prenom.value = apprenantStore.apprenant.prenom;
-    //     email.value = apprenantStore.apprenant.email;
-    //     phone_number.value = apprenantStore.apprenant.phone_number;
-    //     address.value = apprenantStore.apprenant.address;
-    //     // tuteur.value = apprenantStore.apprenant.tuteur;
-    // }).catch((error) => {
-    //     toast.error("Erreur lors du chargement de l'apprenant.");
-    //     console.error("Erreur :", error.message);
-    // });
 });
 
 const updateApprenant = async () => {
@@ -120,3 +107,59 @@ const updateApprenant = async () => {
 };
 
 </script>
+
+<style scoped>
+.form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-content {
+    flex: 1;
+    background-color: #f9f9f9;
+}
+
+.form-control {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.btn {
+    background-color: #1abc9c;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: #1abc9c;
+}
+
+h2 {
+    color: #343a40;
+    font-weight: bold;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.rounded {
+    border-radius: 8px;
+}
+</style>

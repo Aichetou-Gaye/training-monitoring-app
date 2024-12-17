@@ -17,7 +17,7 @@
                     <th>Email</th>
                     <th>Téléphone</th>
                     <th>Adresse</th>
-                    <th>Tuteur/Titrice</th>
+                    <th>Tuteur/Tutrice</th>
                     <th>Status</th>
                     <th class="text-center">Actions</th>
                 </tr>
@@ -30,9 +30,9 @@
                     <td>{{ apprenant.address }}</td>
                     <td>{{ apprenant.tutor }}</td>
                     <td class="status">
-                        <i :class="apprenant.status ? 'fas fa-check-circle active-status' : 'fas fa-ban blocked-status'"
-                            :title="apprenant.status ? 'Actif' : 'Inactif'"
-                            @click="toggleApprenantStatus(apprenant)"></i>
+                        <font-awesom-icon
+                            :class="apprenant.status ? 'fas fa-check-circle active-status' : 'fas fa-ban blocked-status'"
+                            @click="toggleApprenantStatus(apprenant.id)" />
                     </td>
                     <td class="actions">
                         <button class="action-btn" @click="viewApprenantDetails(apprenant.id)">
@@ -76,14 +76,9 @@
                             readonly />
                     </div>
                     <div class="mb-3">
-                        <label for="tutor" class="form-label">Tuteur/Titrice</label>
+                        <label for="tutor" class="form-label">Tuteur/Tutrice</label>
                         <input type="text" id="tutor" v-model="selectedApprenant.tutor" class="form-control" readonly />
                     </div>
-                    <!-- <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <input type="text" id="status" v-model="selectedApprenant.status ? 'Actif' : 'Inactif'"
-                            class="form-control" readonly />
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -111,7 +106,6 @@ onMounted(async () => {
     try {
         await apprenantStore.loadApprenantData();
         apprenants.value = apprenantStore.apprenants;
-        // console.log("fghjkhgfddf", apprenants.value);
 
     } catch (error) {
         console.error("Erreur lors du chargement des apprenants:", error);
@@ -125,7 +119,6 @@ const viewApprenantDetails = async (id) => {
     isLoading.value = true;
     try {
         selectedApprenant.value = await apprenantStore.loadApprenantById(id);
-        // selectedApprenant.value = apprenantStore.apprenant;
         isModalVisible.value = true;
     } catch (error) {
         console.error("Erreur lors du chargement des détails de l'apprenant :", error);
@@ -167,21 +160,11 @@ const confirmRemoveApprenant = async (id) => {
     }
 };
 
-const toggleApprenantStatus = async (apprenant) => {
+const toggleApprenantStatus = async (id) => {
     try {
-        const updatedStatus = !apprenant.status;
-        await apprenantStore.updateApprenant(apprenant.id, {
-            full_name: apprenant.full_name,
-            email: apprenant.email,
-            phone_number: apprenant.phone_number,
-            address: apprenant.address,
-            status: updatedStatus
-        });
-
-        apprenant.status = updatedStatus;
-
+        await apprenantStore.toggleStatut(id)
         toast.success(
-            `Le statut de l'apprenant ${apprenant.nom} a été mis à jour avec succès !`
+            `Le statut de l'apprenant a été mis à jour avec succès !`
         );
     } catch (error) {
         console.error("Erreur lors de la mise à jour du statut :", error.message);
@@ -205,6 +188,87 @@ const toggleApprenantStatus = async (apprenant) => {
     color: #dc3545;
 }
 
+.management {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 10px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+h2 {
+    font-size: 28px;
+    color: #4a4a4a;
+    font-weight: 600;
+}
+
+.create {
+    color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.create i {
+    margin-right: 8px;
+}
+
+.tableau {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tableau th,
+.tableau td {
+    padding: 15px 20px;
+    text-align: left;
+}
+
+.tableau th {
+    background-color: #cccccc;
+    color: #000;
+    font-weight: bold;
+}
+
+.tableau td {
+    border-bottom: 1px solid #e3e3e3;
+    color: #333;
+}
+
+.tableau tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.actions {
+    text-align: center;
+    display: flex;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.action-btn i {
+    color: #6c757d;
+    font-size: 15px;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -212,24 +276,55 @@ const toggleApprenantStatus = async (apprenant) => {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* Fond semi-transparent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     transition: opacity 0.3s ease-in-out;
-    /* Animation d'apparition du modal */
 }
 
 .modal-content {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    /* Coins arrondis */
     width: 500px;
     max-width: 90%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    /* Ombre subtile autour du modal */
     transition: transform 0.3s ease-in-out;
 }
 
@@ -253,7 +348,6 @@ const toggleApprenantStatus = async (apprenant) => {
 
 .close:hover {
     color: #333;
-    /* Changer la couleur au survol */
 }
 
 .mb-3 {
@@ -273,23 +367,18 @@ const toggleApprenantStatus = async (apprenant) => {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    /* Coins arrondis des champs de saisie */
     background-color: #f9f9f9;
-    /* Couleur de fond des champs */
     transition: border-color 0.3s;
 }
 
 .form-control:focus {
     border-color: #1abc9c;
-    /* Couleur de la bordure au focus */
     outline: none;
 }
 
 .form-control[readonly] {
     background-color: #e9ecef;
-    /* Changer la couleur de fond des champs readonly */
     cursor: not-allowed;
-    /* Désactiver le curseur de texte */
 }
 
 .modal-content p {
@@ -300,6 +389,5 @@ const toggleApprenantStatus = async (apprenant) => {
 
 .modal-content p strong {
     color: #1abc9c;
-    /* Couleur pour les labels */
 }
 </style>
